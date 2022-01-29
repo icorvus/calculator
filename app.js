@@ -1,5 +1,5 @@
 function add(numberA, numberB) {
-  return numberA + numberB;
+  return parseInt(numberA) + parseInt(numberB);
 }
 
 function substract(numberA, numberB) {
@@ -34,6 +34,10 @@ function operate(operator, numberA, numberB) {
 }
 
 function populateDisplay(event) {
+  if (isOperatorSelected) {
+    displayContent.textContent = "";
+    isOperatorSelected = false;
+  }
   if (event.target.textContent === ".") {
     if (displayContent.textContent.includes(".")) return;
     else if (displayContent.textContent.length > 10) return;
@@ -60,3 +64,29 @@ numberButtons.forEach(numberButton => {
   numberButton.addEventListener('click', populateDisplay);
   })
 
+
+let isOperatorSelected = false;
+let currentOperator;
+let currentValue;
+let otherValue;
+let grandTotalMode = false;
+
+const clearEntryButton = document.getElementById('CE');
+clearEntryButton.addEventListener('click', () => displayContent.textContent = "0")
+
+const addButton = document.querySelector('.add');
+addButton.addEventListener('click', () => {
+  grandTotalMode = false;
+  currentOperator = '+';
+  currentValue = displayContent.textContent;
+  isOperatorSelected = true;
+})
+
+const equalsButton = document.querySelector('.equals');
+equalsButton.addEventListener('click', () => {
+  if (!grandTotalMode) otherValue = displayContent.textContent;
+  displayContent.textContent = operate(currentOperator, currentValue, otherValue);
+  currentValue = displayContent.textContent;
+  grandTotalMode = true;
+  isOperatorSelected = true;
+})
