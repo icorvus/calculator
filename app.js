@@ -104,11 +104,21 @@ allClearButton.addEventListener('click', () => {
 
 const backSpaceButton = document.querySelector('.backspace');
 backSpaceButton.addEventListener('click', () => {
-  displayContent.textContent = displayContent.textContent.slice(0, -1)
-  if (displayContent.textContent.length <= 0) {
+  displayContent.textContent = displayContent.textContent.slice(0, -1);
+  if (displayContent.textContent.length <= 0 ||
+     displayContent.textContent[0] === "-" &&  displayContent.textContent.length === 1) {
     displayContent.textContent = "0";
   }
 });
+
+const plusMinusButton = document.querySelector('.plus-minus');
+plusMinusButton.addEventListener('click', () => {
+  if (displayContent.textContent[0] !== "-") {
+    displayContent.textContent = "-" + displayContent.textContent;
+  } else {
+    displayContent.textContent = displayContent.textContent.slice(1)
+  }
+})
 
 const operatorButtons = document.querySelectorAll('.operate-key');
 console.log(operatorButtons);
