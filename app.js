@@ -1,17 +1,29 @@
+function preventOverflow(number){
+  number = number.toString()
+  if (number.length > 12){
+    number = number.slice(0, 12);
+    if (number[11] === ".") {
+      number = number.slice(0, 11);
+    }
+  }
+  return number;
+}
+
+
 function add(numberA, numberB) {
-  return parseInt(numberA) + parseInt(numberB);
+  return preventOverflow(parseInt(numberA) + parseInt(numberB));
 }
 
 function substract(numberA, numberB) {
-  return numberA - numberB;
+  return preventOverflow(numberA - numberB);
 }
 
 function multiply(numberA, numberB) {
-  return numberA * numberB;
+  return preventOverflow((numberA * numberB));
 }
 
 function divide(numberA, numberB) {
-  return numberA / numberB;
+  return preventOverflow(numberA / numberB);
 }
 
 function operate(operator, numberA, numberB) {
@@ -34,18 +46,21 @@ function operate(operator, numberA, numberB) {
 }
 
 function populateDisplay(event) {
-  if (isOperatorSelected) {
-    displayContent.textContent = "";
-    isOperatorSelected = false;
+  if (inputReady) {
+    displayContent.textContent = "0";
+    inputReady= false;
   }
   if (event.target.textContent === ".") {
     if (displayContent.textContent.includes(".")) return;
     else if (displayContent.textContent.length > 10) return;
   }
   if (displayContent.textContent === "0") {
-    if (event.target.textContent === "00" || event.target.textContent === "."){
+    if (event.target.textContent === "00"){
       return;
-    } else {
+    } else if (event.target.textContent === "."){
+      displayContent.textContent += event.target.textContent;
+    }
+     else {
       displayContent.textContent = event.target.textContent;
     }
   } else if (displayContent.textContent.length < 12) {
@@ -65,28 +80,39 @@ numberButtons.forEach(numberButton => {
   })
 
 
-let isOperatorSelected = false;
+let inputReady = false;
 let currentOperator;
 let currentValue;
-let otherValue;
-let grandTotalMode = false;
 
 const clearEntryButton = document.getElementById('CE');
-clearEntryButton.addEventListener('click', () => displayContent.textContent = "0")
+clearEntryButton.addEventListener('click', () => displayContent.textContent = "0");
 
-const addButton = document.querySelector('.add');
-addButton.addEventListener('click', () => {
-  grandTotalMode = false;
-  currentOperator = '+';
+const allClearButton = document.getElementById('AC');
+allClearButton.addEventListener('click', () => {
+  currentOperator = null;
+  currentValue = null;
+  displayContent.textContent = "0";
+});
+
+const operatorButtons = document.querySelectorAll('.operate-key');
+console.log(operatorButtons);
+operatorButtons.forEach(button => button.addEventListener('click', calculate));
+
+function calculate(event) {
+  if (currentOperator) {
+    displayContent.textContent = operate(currentOperator, currentValue, displayContent.textContent);
+  }
   currentValue = displayContent.textContent;
-  isOperatorSelected = true;
-})
+  currentOperator = event.target.id;
+  inputReady = true;
+}
+
 
 const equalsButton = document.querySelector('.equals');
 equalsButton.addEventListener('click', () => {
-  if (!grandTotalMode) otherValue = displayContent.textContent;
-  displayContent.textContent = operate(currentOperator, currentValue, otherValue);
-  currentValue = displayContent.textContent;
-  grandTotalMode = true;
-  isOperatorSelected = true;
+  if (!currentValue || !currentValue) return;
+  displayContent.textContent = operate(currentOperator, currentValue, displayContent.textContent);
+  currentOperator = null;
+  currentValue = null;
+  inputReady = true;
 })
