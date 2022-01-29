@@ -23,7 +23,12 @@ function multiply(numberA, numberB) {
 }
 
 function divide(numberA, numberB) {
+  if (numberB == false) return "Try harder bud";
   return preventOverflow(numberA / numberB);
+}
+
+function root(numberA) {
+  return preventOverflow(Math.sqrt(numberA));
 }
 
 function operate(operator, numberA, numberB) {
@@ -39,6 +44,9 @@ function operate(operator, numberA, numberB) {
       break;
     case '/':
       return divide(numberA, numberB);
+      break;
+    case 'sqrt':
+      return root(numberA);
       break;
     default:
       alert(`${operator} is not yet available`)
@@ -94,6 +102,14 @@ allClearButton.addEventListener('click', () => {
   displayContent.textContent = "0";
 });
 
+const backSpaceButton = document.querySelector('.backspace');
+backSpaceButton.addEventListener('click', () => {
+  displayContent.textContent = displayContent.textContent.slice(0, -1)
+  if (displayContent.textContent.length <= 0) {
+    displayContent.textContent = "0";
+  }
+});
+
 const operatorButtons = document.querySelectorAll('.operate-key');
 console.log(operatorButtons);
 operatorButtons.forEach(button => button.addEventListener('click', calculate));
@@ -107,11 +123,25 @@ function calculate(event) {
   inputReady = true;
 }
 
+const sqrtButton = document.getElementById('sqrt');
+sqrtButton.addEventListener('click', () => {
+  displayContent.textContent = operate('sqrt', displayContent.textContent);
+})
+
 
 const equalsButton = document.querySelector('.equals');
 equalsButton.addEventListener('click', () => {
   if (!currentValue || !currentValue) return;
   displayContent.textContent = operate(currentOperator, currentValue, displayContent.textContent);
+  currentOperator = null;
+  currentValue = null;
+  inputReady = true;
+})
+
+const percentButton = document.querySelector('.percent');
+percentButton.addEventListener('click', () => {
+  if (!currentValue || !currentValue) return;
+  displayContent.textContent = operate(currentOperator, currentValue, displayContent.textContent * 0.01);
   currentOperator = null;
   currentValue = null;
   inputReady = true;
