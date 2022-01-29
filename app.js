@@ -32,3 +32,31 @@ function operate(operator, numberA, numberB) {
       alert(`${operator} is not yet available`)
   }
 }
+
+function populateDisplay(event) {
+  if (event.target.textContent === ".") {
+    if (displayContent.textContent.includes(".")) return;
+    else if (displayContent.textContent.length > 10) return;
+  }
+  if (displayContent.textContent === "0") {
+    if (event.target.textContent === "00" || event.target.textContent === "."){
+      return;
+    } else {
+      displayContent.textContent = event.target.textContent;
+    }
+  } else if (displayContent.textContent.length < 12) {
+    if (event.target.textContent === "00" && displayContent.textContent.length === 11) {
+      displayContent.textContent += "0";
+    } else {
+      displayContent.textContent += event.target.textContent;
+    }
+  }
+}
+
+const displayContent = document.querySelector('.display-content');
+
+const numberButtons = document.querySelectorAll('.number-key');
+numberButtons.forEach(numberButton => {
+  numberButton.addEventListener('click', populateDisplay);
+  })
+
