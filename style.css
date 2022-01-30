@@ -22,7 +22,10 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+  text-align: center;
   height: 100%;
+  background-color: #FAFF81;
 }
 
 .calculator {
@@ -113,4 +116,10 @@ body {
   font-size: 40px;
   text-align: center;
   padding-top: 20px;
+}
+
+.footer {
+  font-family: 'Arial', sans-serif;
+  font-size: 26px;
+  margin-top: 20px;
 }

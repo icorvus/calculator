@@ -141,7 +141,7 @@ sqrtButton.addEventListener('click', () => {
 
 const equalsButton = document.querySelector('.equals');
 equalsButton.addEventListener('click', () => {
-  if (!currentValue || !currentValue) return;
+  if (!currentValue || !currentOperator) return;
   displayContent.textContent = operate(currentOperator, currentValue, displayContent.textContent);
   currentOperator = null;
   currentValue = null;
@@ -150,7 +150,7 @@ equalsButton.addEventListener('click', () => {
 
 const percentButton = document.querySelector('.percent');
 percentButton.addEventListener('click', () => {
-  if (!currentValue || !currentValue) return;
+  if (!currentValue || !currentOperator) return;
   displayContent.textContent = operate(currentOperator, currentValue, displayContent.textContent * 0.01);
   currentOperator = null;
   currentValue = null;
