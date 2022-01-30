@@ -1,3 +1,13 @@
+@font-face {
+  font-family: 'Digital-7';
+  src: url('fonts/Digital-7.woff2') format('woff2'),
+      url('fonts/Digital-7.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+
 * {
   box-sizing: border-box;
   padding: 0;
@@ -19,26 +29,26 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: grey;
-  width: 700px;
+  background-color: #A5A5A5;
   padding: 40px;
   gap: 40px;
 }
 
 .keyboard {
   display: flex;
-  width: 600px;
-  height: 400px;
   justify-content: center;
-  gap: 20px;
+  gap: 25px;
 }
 
 .btn {
-  font-size: 30px;
-  background-color: darkgray;
+  font-size: 50px;
+  font-family: 'Arial', sans-serif;
+  font-weight: bold;
+  background-color: #7F7F7F;
   border: none;
   cursor: pointer;
   color: #FFF;
+  border-radius: 5px;
 }
 
 .btn:hover {
@@ -51,7 +61,7 @@ body {
 }
 
 .clear-key {
-  background-color: tomato;
+  background-color: #A51C30;
 }
 
 .left-keys {
@@ -59,26 +69,26 @@ body {
   grid-template-columns: 1fr;
   grid-template-rows: 1fr 1fr 1fr 1fr;
   width: 100px;
-  height: 400px;
-  gap: 10px;
+  height: 445px;
+  gap: 15px;
 }
 
 .mid-keys {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr 1fr;
-  width: 300px;
-  height: 400px;
-  gap: 10px;
+  width: 330px;
+  height: 445px;
+  gap: 15px;
 }
 
 .right-keys {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr 1fr;
-  width: 200px;
-  height: 400px;
-  gap: 10px;
+  width: 215px;
+  height: 445px;
+  gap: 15px;
 }
 
 .add {
@@ -86,14 +96,21 @@ body {
 }
 
 .display {
-  background-color: lightgrey;
-  width: 90%;
+  background-color: #CCCCCC;
+  width: 695px;
   padding: 20px 30px;
+  font-family: 'Digital-7', sans-serif;
 }
 
 .display-content {
-  font-size: 54px;
+  font-size: 100px;
   padding: 10px;
   text-align: right;
-  background-color: green;
+  background-color: #7F7F7F;
+}
+
+.display-subtext {
+  font-size: 40px;
+  text-align: center;
+  padding-top: 20px;
 }
