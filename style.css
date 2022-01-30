@@ -123,3 +123,8 @@ body {
   font-size: 26px;
   margin-top: 20px;
 }
+
+.red-link {
+  color: #A51C30;
+  font-weight: bold;
+}
