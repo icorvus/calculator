@@ -23,7 +23,7 @@ function multiply(numberA, numberB) {
 }
 
 function divide(numberA, numberB) {
-  if (numberB == false) return "Try harder bud";
+  if (numberB == false) return "Nice try!";
   return preventOverflow(numberA / numberB);
 }
 
