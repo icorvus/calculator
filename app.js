@@ -90,18 +90,20 @@ numberButtons.forEach(numberButton => {
 
 
 let inputReady = false;
-let currentOperator;
-let currentValue;
+let currentOperator = null;
+let currentValue = null;
 
 const clearEntryButton = document.getElementById('CE');
 clearEntryButton.addEventListener('click', () => displayContent.textContent = "0");
 
-const allClearButton = document.getElementById('AC');
-allClearButton.addEventListener('click', () => {
+function clearAll() {
   currentOperator = null;
   currentValue = null;
   displayContent.textContent = "0";
-});
+}
+
+const allClearButton = document.getElementById('AC');
+allClearButton.addEventListener('click', clearAll);
 
 const backSpaceButton = document.querySelector('.backspace');
 backSpaceButton.addEventListener('click', backspace);
@@ -118,14 +120,16 @@ function backspace() {
   }
 }
 
-const plusMinusButton = document.querySelector('.plus-minus');
-plusMinusButton.addEventListener('click', () => {
+function toggleNegative() {
   if (displayContent.textContent[0] !== "-") {
     displayContent.textContent = "-" + displayContent.textContent;
   } else {
     displayContent.textContent = displayContent.textContent.slice(1)
   }
-})
+}
+
+const plusMinusButton = document.querySelector('.plus-minus');
+plusMinusButton.addEventListener('click', toggleNegative);
 
 const operatorButtons = document.querySelectorAll('.operate-key');
 console.log(operatorButtons);
@@ -145,19 +149,14 @@ function calculate(event) {
 }
 
 const sqrtButton = document.getElementById('sqrt');
-sqrtButton.addEventListener('click', () => {
-  displayContent.textContent = operate('sqrt', displayContent.textContent);
-})
+sqrtButton.addEventListener('click', showSqrt);
 
+function showSqrt() {
+  displayContent.textContent = operate('sqrt', displayContent.textContent);
+}
 
 const equalsButton = document.querySelector('.equals');
-equalsButton.addEventListener('click', () => {
-  if (!currentValue || !currentOperator) return;
-  displayContent.textContent = operate(currentOperator, currentValue, displayContent.textContent);
-  currentOperator = null;
-  currentValue = null;
-  inputReady = true;
-})
+equalsButton.addEventListener('click', equals);
 
 function equals() {
   if (!currentValue || !currentOperator) return;
@@ -167,8 +166,16 @@ function equals() {
   inputReady = true;
 }
 
+function percentEquals() {
+  if (!currentValue || !currentOperator) return;
+  displayContent.textContent = operate(currentOperator, currentValue, displayContent.textContent * 0.01);
+  currentOperator = null;
+  currentValue = null;
+  inputReady = true;
+}
+
 const percentButton = document.querySelector('.percent');
-percentButton.addEventListener('click', equals);
+percentButton.addEventListener('click', percentEquals);
 
 window.addEventListener('keydown', (event) => {
   switch (event.key) {
@@ -180,6 +187,15 @@ window.addEventListener('keydown', (event) => {
       break;
     case 'Backspace':
       backspace()
+      break;
+    case `c`: case 'C':
+      clearAll()
+      break;
+    case 'Control':
+      toggleNegative();
+      break;
+    case 's': case 'S':
+      showSqrt()
       break;
   }
 })
