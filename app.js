@@ -2,6 +2,7 @@ function preventOverflow(number){
   number = number.toString()
   if (number.length > 12){
     number = number.slice(0, 12);
+    number = parseFloat(number).toExponential(7);
     if (number[11] === ".") {
       number = number.slice(0, 11);
     }
@@ -11,20 +12,20 @@ function preventOverflow(number){
 
 
 function add(numberA, numberB) {
-  return preventOverflow(parseInt(numberA) + parseInt(numberB));
+  return preventOverflow((parseFloat(numberA) * 10 + parseFloat(numberB) * 10) / 10);
 }
 
 function substract(numberA, numberB) {
-  return preventOverflow(numberA - numberB);
+  return preventOverflow((parseFloat(numberA) * 10 - parseFloat(numberB) * 10) / 10);
 }
 
 function multiply(numberA, numberB) {
-  return preventOverflow((numberA * numberB));
+  return preventOverflow((parseFloat(numberA) * parseFloat(numberB) * 10) / 10);
 }
 
 function divide(numberA, numberB) {
   if (numberB == false) return "Nice try!";
-  return preventOverflow(numberA / numberB);
+  return preventOverflow((parseFloat(numberA) * 10 / parseFloat(numberB)) / 10);
 }
 
 function root(numberA) {
@@ -103,13 +104,19 @@ allClearButton.addEventListener('click', () => {
 });
 
 const backSpaceButton = document.querySelector('.backspace');
-backSpaceButton.addEventListener('click', () => {
+backSpaceButton.addEventListener('click', backspace);
+
+function backspace() {
+  if (isNaN(displayContent.textContent)) {
+    displayContent.textContent = "0";
+    return;
+  }
   displayContent.textContent = displayContent.textContent.slice(0, -1);
   if (displayContent.textContent.length <= 0 ||
      displayContent.textContent[0] === "-" &&  displayContent.textContent.length === 1) {
     displayContent.textContent = "0";
   }
-});
+}
 
 const plusMinusButton = document.querySelector('.plus-minus');
 plusMinusButton.addEventListener('click', () => {
@@ -129,7 +136,11 @@ function calculate(event) {
     displayContent.textContent = operate(currentOperator, currentValue, displayContent.textContent);
   }
   currentValue = displayContent.textContent;
-  currentOperator = event.target.id;
+  if (event.detail !== 0){
+    currentOperator = event.target.id;
+  } else {
+    currentOperator = event.key;
+  }
   inputReady = true;
 }
 
@@ -148,11 +159,50 @@ equalsButton.addEventListener('click', () => {
   inputReady = true;
 })
 
-const percentButton = document.querySelector('.percent');
-percentButton.addEventListener('click', () => {
+function equals() {
   if (!currentValue || !currentOperator) return;
-  displayContent.textContent = operate(currentOperator, currentValue, displayContent.textContent * 0.01);
+  displayContent.textContent = operate(currentOperator, currentValue, displayContent.textContent);
   currentOperator = null;
   currentValue = null;
   inputReady = true;
+}
+
+const percentButton = document.querySelector('.percent');
+percentButton.addEventListener('click', equals);
+
+window.addEventListener('keydown', (event) => {
+  switch (event.key) {
+    case '=': case 'Enter':
+      equals();
+      break;
+    case '+': case '-': case '*': case '/':
+      calculate(event);
+      break;
+    case 'Backspace':
+      backspace()
+      break;
+  }
 })
+
+window.addEventListener('keydown', populateKeyDisplay);
+
+function populateKeyDisplay(event) {
+  if (isNaN(event.key) && event.key !== '.') return;
+  if (inputReady) {
+    displayContent.textContent = "0";
+    inputReady= false;
+  }
+  if (event.key === ".") {
+    if (displayContent.textContent.includes(".")) return;
+    else if (displayContent.textContent.length > 10) return;
+  }
+  if (displayContent.textContent === "0") {
+    if (event.key === "."){
+      displayContent.textContent += event.key;
+    } else {
+      displayContent.textContent = event.key;
+    }
+  } else if (displayContent.textContent.length < 12) {
+    displayContent.textContent += event.key;
+  }
+}
