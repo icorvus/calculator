@@ -28,6 +28,7 @@ function divide(numberA, numberB) {
 }
 
 function root(numberA) {
+  if (numberA < 0) return "Nice try!";
   return preventOverflow(Math.sqrt(numberA));
 }
 
